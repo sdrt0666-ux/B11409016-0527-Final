@@ -93,4 +93,30 @@ class OptimizedJsonLibrarySystem:
                         continue
                         
                     raw = argument_part.split("/")
-                    if len(raw) ==
+                    if len(raw) == 3 and all(field.strip() for field in raw):
+                        self.add_book(raw[0].strip(), raw[1].strip(), raw[2].strip())
+                    else:
+                        print("格式錯誤！請確保欄位完整且使用 '/' 分隔。")
+                        
+                elif op == "show":
+                    self.show_all_books()
+                    
+                elif op.startswith("borrow "):
+                    isbn = op[7:].strip()
+                    if isbn:
+                        self.borrow_book(isbn)
+                    else:
+                        print("格式錯誤！請輸入 ISBN 碼。")
+                        
+                elif not op:
+                    continue
+                else:
+                    print("未知指令！")
+                    
+            except (KeyboardInterrupt, EOFError):
+                print("\n偵測到強制結束訊號，正在安全退出...")
+                break
+
+if __name__ == "__main__":
+    library = OptimizedJsonLibrarySystem()
+    library.run()
